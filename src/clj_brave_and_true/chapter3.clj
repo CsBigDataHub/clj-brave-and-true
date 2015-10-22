@@ -59,7 +59,8 @@
                  {:name "foot"      :size 2}])
 
 (defn symmetrize-body-parts
-  "Expects a seq of maps that have a :name and :size"
+  "Expects a seq of maps that have a :name and :size
+and an expander function."
   [body-parts expander]
   (reduce (fn [final-body-parts part]
             (into final-body-parts (expander part)))
