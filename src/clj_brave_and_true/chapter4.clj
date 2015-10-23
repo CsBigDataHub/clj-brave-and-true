@@ -83,7 +83,7 @@
         (glitter-filter 3 new-suspect)))
 
 (append (glitter-filter 3 (mapify (parse (slurp filename))))
-        (list ({:name "Manuel Uberti", :glitter-index 5})))
+        (list {:name "Manuel Uberti", :glitter-index 5}))
 
 ;;; 3
 (def validations {:name? #(= % :name)
