@@ -33,3 +33,71 @@
           s))
 
 (my-some #(> % 2) [1 2 1])
+
+;;; A Vampire Data Analysis Program for the FWPD
+(def filename "suspects.csv")
+;; (slurp filename)
+
+(def vamp-keys [:name :glitter-index])
+
+(defn str-int
+  [str]
+  (Integer. str))
+
+(def conversions {:name identity
+                  :glitter-index str-int})
+
+(defn convert
+  [vamp-key value]
+  ((get conversions vamp-key) value))
+;; (convert :glitter-index "3")
+
+(defn parse
+  "Convert a CSV into rows of columns"
+  [string]
+  (map #(clojure.string/split % #",")
+       (clojure.string/split string #"\n")))
+;; (parse (slurp filename))
+
+(defn mapify
+  "Return a seq of maps like {:name \"Edward Cullen\" :glitter-index 10}"
+  [rows]
+  (map (fn [unmapped-row]
+         (reduce (fn [row-map [vamp-key value]]
+                   (assoc row-map vamp-key (convert vamp-key value)))
+                 {}
+                 (map vector vamp-keys unmapped-row)))
+       rows))
+;; (first (mapify (parse (slurp filename))))
+
+(defn glitter-filter
+  [minimum-glitter records]
+  (map :name ;;; 1
+       (filter #(>= (:glitter-index %) minimum-glitter) records)))
+;; (glitter-filter 3 (mapify (parse (slurp filename))))
+
+;;; 2
+(defn append
+  [suspects new-suspect]
+  (into suspects
+        (glitter-filter 3 new-suspect)))
+
+(append (glitter-filter 3 (mapify (parse (slurp filename))))
+        (list ({:name "Manuel Uberti", :glitter-index 5})))
+
+;;; 3
+(def validations {:name? #(= % :name)
+                  :glitter-index? #(= % :glitter-index)})
+
+(defn validate
+  [functions record]
+  (when (map? record)
+    (if (every? true?
+                (map #(some % (keys record))
+                     (vals functions)))
+      record
+      false)))
+
+(append (glitter-filter 3 (mapify (parse (slurp filename))))
+        (list (validate validations
+                        {:name "Manuel Uberti", :glitter-index 5})))
