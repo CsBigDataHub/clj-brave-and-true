@@ -8,5 +8,4 @@
           []
           s))
 
-(map inc [1 2 3])
 (my-map inc [1 2 3])
