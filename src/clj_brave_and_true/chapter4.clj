@@ -1,6 +1,6 @@
 (ns clj-brave-and-true.chapter4)
 
-;;; implement map with reduce
+;;; Implement map with reduce
 (defn my-map
   [f s]
   (reduce (fn [new-s s]
@@ -10,7 +10,7 @@
 
 (my-map inc [1 2 3])
 
-;;; implement filter with reduce
+;;; Implement filter with reduce
 (defn my-filter
   [p s]
   (reduce (fn [new-s s]
@@ -21,3 +21,15 @@
           s))
 
 (my-filter #(> % 2) [1 2 3 4 5])
+
+;;; Implement some with reduce
+(defn my-some
+  [p s]
+  (reduce (fn [new-s s]
+            (if (p s)
+              true
+              new-s))
+          []
+          s))
+
+(my-some #(> % 2) [1 2 1])
