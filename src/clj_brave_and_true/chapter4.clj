@@ -101,3 +101,16 @@
 (append (glitter-filter 3 (mapify (parse (slurp filename))))
         (list (validate validations
                         {:name "Manuel Uberti", :glitter-index 5})))
+
+;;; 4
+(defn map-to-row
+  [m]
+  (when (validate validations m)
+    (str (:name m) "," (:glitter-index m) "\n")))
+
+(defn to-csv
+  [mapified-entries]
+  (clojure.string/join (map map-to-row mapified-entries)))
+
+(= (to-csv (mapify (parse (slurp filename))))
+   (slurp filename))
