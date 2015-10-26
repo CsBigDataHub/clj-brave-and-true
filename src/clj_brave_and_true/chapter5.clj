@@ -19,13 +19,23 @@
    :attributes {:intelligence 10
                 :strength 4
                 :dexterity 5}})
-(def c-int (comp :intelligence :attributes))
-(def c-str (comp :strength :attributes))
-(def c-dex (comp :dexterity :attributes))
 
 (defn attr
   [a]
   (a (:attributes character)))
 
-(attr :intelligence)
-(attr :strength)
+;;; 3
+(defn my-assoc-in
+  [m [k & ks] v]
+  (if ks
+    (assoc m k (my-assoc-in (get m k) ks v))
+    (assoc m k v)))
+
+;;; 4
+(update-in character [:attributes :intelligence] inc)
+
+;;; 5
+(defn my-update-in
+  [m [k & ks] f & args]
+  (if ks
+    ;; TODO))
