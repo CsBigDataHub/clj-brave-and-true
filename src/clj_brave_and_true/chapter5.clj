@@ -38,5 +38,9 @@
 (defn my-update-in
   [m [k & ks] f & args]
   (if ks
-    ;; TODO
-    ))
+    (if args
+      (assoc m k (my-update-in (get m k) ks f args))
+      (assoc m k (my-update-in (get m k) ks f)))
+    (if args
+      (assoc m k (f (get m k) args))
+      (assoc m k (f (get m k))))))
