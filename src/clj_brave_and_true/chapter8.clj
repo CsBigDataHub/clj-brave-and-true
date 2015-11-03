@@ -67,3 +67,14 @@
       (if or#
         or#
         (my-or ~@next)))))
+
+;;; 3
+(def character
+  {:name "Smooches McCutes"
+   :attributes {:intelligence 10
+                :strength 4
+                :dexterity 5}})
+
+(defmacro defattr
+  [func attr]
+  `(def ~func (comp ~attr :attributes)))
