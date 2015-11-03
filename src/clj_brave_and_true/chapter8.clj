@@ -57,3 +57,13 @@
      nil))
 
 (when-valid order-details order-details-validations)
+
+;;; 2
+(defmacro my-or
+  ([] true)
+  ([x] x)
+  ([x & next]
+   `(let [or# ~x]
+      (if or#
+        or#
+        (my-or ~@next)))))
